@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Сторона Б — магазин винила для вашей коллекции.">
+  <title>Сторона Б — музыка на виниле</title>
+</head>
+<body>
+  <a class="skip-link" href="#content">Перейти к каталогу и заказу</a>
+
+  <header class="masthead">
+    <a class="logo" href="#content">Сторона Б</a>
+    <p>Магазин виниловых пластинок</p>
+    <nav aria-label="Разделы магазина">
+      <a href="#records">Релизы</a>
+      <a href="#basket">Мой заказ: <span id="basket-quantity">0</span></a>
+      <a href="#about">О магазине</a>
+    </nav>
+  </header>
+
+  <main id="content">
+    <section class="cover-story" aria-labelledby="cover-title">
+      <p>Коллекция / 2026</p>
+      <h1 id="cover-title">Музыка, которую можно держать в руках</h1>
+      <p>Четыре настроения. Четыре пластинки. Найдите свою сторону.</p>
+      <a href="#records">Смотреть релизы</a>
+    </section>
+
+    <section id="records" aria-labelledby="records-title">
+      <header class="section-heading">
+        <h2 id="records-title">На полке</h2>
+        <p>Электроника, джаз, инди и эмбиент</p>
+      </header>
+      <div class="record-grid">
+        <article class="release" aria-labelledby="release-night-lines"
+                 data-record="night-lines" data-title="Mira Lane — Night Lines" data-cost="2490">
+          <header class="release-heading">
+            <p>Электроника / 2024</p>
+            <h3 id="release-night-lines">Night Lines</h3>
+            <p class="artist">Mira Lane</p>
+          </header>
+          <p>Синтезаторные мелодии и размеренный городской ритм.</p>
+          <dl>
+            <dt>Формат</dt><dd>LP, 12 дюймов</dd>
+            <dt>Цена</dt><dd><data value="2490">2 490 ₽</data></dd>
+          </dl>
+          <button type="button" data-add-record="night-lines"
+                  aria-label="Добавить в корзину: Mira Lane — Night Lines" disabled>Добавить в корзину</button>
+        </article>
+        <article class="release" aria-labelledby="release-soft-focus"
+                 data-record="soft-focus" data-title="The Sunday Trio — Soft Focus" data-cost="3190">
+          <header class="release-heading">
+            <p>Джаз / 2023</p>
+            <h3 id="release-soft-focus">Soft Focus</h3>
+            <p class="artist">The Sunday Trio</p>
+          </header>
+          <p>Камерная запись фортепианного трио.</p>
+          <dl>
+            <dt>Формат</dt><dd>LP, 12 дюймов</dd>
+            <dt>Цена</dt><dd><data value="3190">3 190 ₽</data></dd>
+          </dl>
+          <button type="button" data-add-record="soft-focus"
+                  aria-label="Добавить в корзину: The Sunday Trio — Soft Focus" disabled>Добавить в корзину</button>
+        </article>
+        <article class="release" aria-labelledby="release-northern-air"
+                 data-record="northern-air" data-title="Polar Echo — Northern Air" data-cost="2790">
+          <header class="release-heading">
+            <p>Инди / 2025</p>
+            <h3 id="release-northern-air">Northern Air</h3>
+            <p class="artist">Polar Echo</p>
+          </header>
+          <p>Гитарный альбом о дороге и северных городах.</p>
+          <dl>
+            <dt>Формат</dt><dd>LP, 12 дюймов</dd>
+            <dt>Цена</dt><dd><data value="2790">2 790 ₽</data></dd>
+          </dl>
+          <button type="button" data-add-record="northern-air"
+                  aria-label="Добавить в корзину: Polar Echo — Northern Air" disabled>Добавить в корзину</button>
+        </article>
+        <article class="release" aria-labelledby="release-slow-orbit"
+                 data-record="slow-orbit" data-title="Noma — Slow Orbit" data-cost="2290">
+          <header class="release-heading">
+            <p>Эмбиент / 2026</p>
+            <h3 id="release-slow-orbit">Slow Orbit</h3>
+            <p class="artist">Noma</p>
+          </header>
+          <p>Просторные звуковые пейзажи для внимательного слушания.</p>
+          <dl>
+            <dt>Формат</dt><dd>LP, 12 дюймов</dd>
+            <dt>Цена</dt><dd><data value="2290">2 290 ₽</data></dd>
+          </dl>
+          <button type="button" data-add-record="slow-orbit"
+                  aria-label="Добавить в корзину: Noma — Slow Orbit" disabled>Добавить в корзину</button>
+        </article>
+      </div>
+    </section>
+
+    <section id="basket" class="basket" aria-labelledby="basket-title">
+      <h2 id="basket-title">Ваш заказ</h2>
+      <table class="basket-table">
+        <caption>Выбранные пластинки</caption>
+        <thead>
+          <tr>
+            <th scope="col">Пластинка</th>
+            <th scope="col">Цена</th>
+            <th scope="col">Количество</th>
+            <th scope="col">Сумма</th>
+            <th scope="col">Действия</th>
+          </tr>
+        </thead>
+        <tbody id="basket-lines">
+          <tr id="empty-basket"><td colspan="5">В корзине пока нет пластинок.</td></tr>
+        </tbody>
+      </table>
+      <p>Общая стоимость: <output id="basket-amount" aria-live="polite">0 ₽</output></p>
+      <button id="open-order" type="button" disabled>Оформить заказ</button>
+    </section>
+
+    <section id="order" class="order" aria-labelledby="order-title">
+      <h2 id="order-title">Данные для доставки</h2>
+      <p>Заполните все четыре поля.</p>
+      <form id="delivery-form">
+        <div class="customer-fields">
+          <div class="field">
+            <label for="customer-given">Имя</label>
+            <input id="customer-given" name="givenName" autocomplete="given-name" type="text" maxlength="60" required>
+          </div>
+          <div class="field">
+            <label for="customer-family">Фамилия</label>
+            <input id="customer-family" name="familyName" autocomplete="family-name" type="text" maxlength="80" required>
+          </div>
+        </div>
+        <div class="field">
+          <label for="shipping-address">Адрес доставки</label>
+          <textarea id="shipping-address" name="shippingAddress" autocomplete="street-address"
+                    aria-describedby="address-help" rows="3" maxlength="300" required></textarea>
+          <p id="address-help">Город, улица, номер дома и квартиры.</p>
+        </div>
+        <div class="field">
+          <label for="contact-number">Контактный номер телефона</label>
+          <input id="contact-number" name="contactNumber" autocomplete="tel" type="tel" maxlength="30" required>
+        </div>
+        <button type="submit" disabled>Создать заказ</button>
+      </form>
+      <p id="confirmation" role="status"></p>
+    </section>
+
+    <section id="about" aria-labelledby="about-title">
+      <h2 id="about-title">О Стороне Б</h2>
+      <p>Учебный магазин с вымышленными исполнителями и релизами. Заказы демонстрационные, оплата не проводится.</p>
+    </section>
+  </main>
+
+  <footer class="colophon">
+    <p>Сторона Б · 2026</p>
+    <a href="#records">Вернуться к релизам</a>
+  </footer>
+</body>
+</html>
