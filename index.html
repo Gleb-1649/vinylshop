@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Сторона Б — магазин винила для вашей коллекции.">
   <title>Сторона Б — музыка на виниле</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <a class="skip-link" href="#content">Перейти к каталогу и заказу</a>
@@ -98,6 +99,7 @@
 
     <section id="basket" class="basket" aria-labelledby="basket-title">
       <h2 id="basket-title">Ваш заказ</h2>
+      <div class="basket-scroll" role="region" aria-label="Товары в корзине" tabindex="0">
       <table class="basket-table">
         <caption>Выбранные пластинки</caption>
         <thead>
@@ -113,6 +115,7 @@
           <tr id="empty-basket"><td colspan="5">В корзине пока нет пластинок.</td></tr>
         </tbody>
       </table>
+      </div>
       <p>Общая стоимость: <output id="basket-amount" aria-live="polite">0 ₽</output></p>
       <button id="open-order" type="button" disabled>Оформить заказ</button>
     </section>

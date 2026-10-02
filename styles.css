@@ -1,0 +1,88 @@
+/* Общие настройки */
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font: 16px/1.5 Arial, sans-serif;
+  color: #252525;
+  background: #f3f3f3;
+}
+main, body > header, footer {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+h1 { font-size: 28px; }
+h2 { font-size: 23px; }
+h3 { font-size: 19px; }
+a { color: #354f80; }
+section, aside { margin-bottom: 24px; }
+button, input, textarea { font: inherit; }
+button {
+  padding: 8px 14px;
+  border: 1px solid #354f80;
+  background: #354f80;
+  color: white;
+  cursor: pointer;
+}
+button:disabled {
+  background: #e2e2e2;
+  border-color: #b5b5b5;
+  color: #555;
+  cursor: not-allowed;
+}
+label { display: block; margin-bottom: 5px; }
+input, textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #999;
+  background: white;
+}
+textarea { resize: vertical; }
+form { max-width: 550px; }
+footer { border-top: 1px solid #ccc; }
+/* Ссылка для перехода к содержимому с клавиатуры */
+.skip-link { position: absolute; left: -10000px; }
+.skip-link:focus {
+  left: 10px;
+  top: 10px;
+  padding: 8px;
+  background: white;
+}
+:focus-visible { outline: 2px solid #354f80; outline-offset: 3px; }
+[hidden] { display: none !important; }
+
+/* Шапка и описание магазина */
+.masthead { background: #e2e7ef; }
+.logo { font-size: 24px; font-weight: bold; text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 20px; }
+.cover-story { padding-bottom: 15px; border-bottom: 1px solid #ccc; }
+/* Каталог из двух колонок */
+.record-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+.release {
+  display: flex;
+  flex-direction: column;
+  padding: 18px;
+  border: 1px solid #bbb;
+  background: white;
+}
+.release-heading h3 { margin: 8px 0; }
+.artist { color: #555; }
+dl { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+dd { margin: 0; }
+.release button { margin-top: auto; }
+/* На телефоне таблица прокручивается внутри блока */
+.basket-scroll { overflow-x: auto; }
+.basket-table { width: 100%; border-collapse: collapse; background: white; }
+th, td { padding: 10px; border: 1px solid #bbb; text-align: left; }
+caption { margin-bottom: 10px; text-align: left; }
+.basket, .order { margin-top: 30px; }
+.field { margin-bottom: 16px; }
+#address-help { font-size: 14px; color: #555; }
+@media (max-width: 600px) {
+  .record-grid { grid-template-columns: 1fr; }
+  main, body > header, footer { padding: 12px; }
+}
