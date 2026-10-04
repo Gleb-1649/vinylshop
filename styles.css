@@ -86,3 +86,6 @@ caption { margin-bottom: 10px; text-align: left; }
   .record-grid { grid-template-columns: 1fr; }
   main, body > header, footer { padding: 12px; }
 }
+
+/* Поле количества в таблице корзины */
+.basket-table input { width: 90px; }
