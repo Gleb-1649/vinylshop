@@ -5,6 +5,13 @@ const rows = document.querySelector('#basket-lines');
 const emptyRow = document.querySelector('#empty-basket');
 const amount = document.querySelector('#basket-amount');
 const counter = document.querySelector('#basket-quantity');
+const openOrder = document.querySelector('#open-order');
+const orderSection = document.querySelector('#order');
+const deliveryForm = document.querySelector('#delivery-form');
+const confirmation = document.querySelector('#confirmation');
+const storageNotice = document.querySelector('#storage-notice');
+const basketKey = 'vinyl-shop-basket';
+
 
 function money(value) {
   return value.toLocaleString('ru-RU') + ' ₽';
@@ -71,6 +78,10 @@ function drawBasket() {
   });
   amount.textContent = money(sum);
   counter.textContent = quantity;
+  openOrder.disabled = codes.length === 0;
+  if (codes.length === 0) orderSection.hidden = true;
+  confirmation.textContent = '';
+  storeBasket();
 }
 
 
@@ -96,4 +107,59 @@ rows.addEventListener('click', function (event) {
   drawBasket();
 });
 
+function storeBasket() {
+  try {
+    localStorage.setItem(basketKey, JSON.stringify(basket));
+    storageNotice.textContent = '';
+  } catch (error) {
+    storageNotice.textContent = 'Не удалось сохранить корзину в этом браузере.';
+  }
+}
+
+function restoreBasket() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(basketKey) || '{}');
+    if (!saved || typeof saved !== 'object' || Array.isArray(saved)) return;
+    
+    Object.keys(records).forEach(function (code) {
+      const quantity = saved[code];
+      if (Number.isSafeInteger(quantity) && quantity > 0 &&
+          Number.isSafeInteger(quantity * records[code].price)) {
+        basket[code] = quantity;
+      }
+    });
+  } catch (error) {
+    
+  }
+}
+
+openOrder.addEventListener('click', function () {
+  if (Object.keys(basket).length === 0) return;
+  orderSection.hidden = false;
+  confirmation.textContent = '';
+  document.querySelector('#customer-given').focus();
+});
+
+deliveryForm.addEventListener('input', function (event) {
+  event.target.setCustomValidity('');
+});
+deliveryForm.addEventListener('submit', function (event) {
+  event.preventDefault();
+  if (Object.keys(basket).length === 0) return;
+  const fields = deliveryForm.querySelectorAll('input, textarea');
+  fields.forEach(function (field) {
+    field.value = field.value.trim();
+    field.setCustomValidity(field.value ? '' : 'Заполните поле.');
+  });
+  if (!deliveryForm.reportValidity()) return;
+  Object.keys(basket).forEach(function (code) {
+    delete basket[code];
+  });
+  drawBasket();
+  deliveryForm.reset();
+  confirmation.textContent = 'Заказ создан!';
+  confirmation.focus();
+});
+
+restoreBasket();
 drawBasket();

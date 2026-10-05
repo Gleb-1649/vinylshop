@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Магазин винила">
-  <title>Магазин винила</title>
+  <title>музыка на виниле</title>
   <link rel="stylesheet" href="styles.css">
   <script src="script.js" defer></script>
 </head>
@@ -13,7 +13,7 @@
 
   <header class="masthead">
     <a class="logo" href="#content">Магазин винила</a>
-   
+    <p>Магазин виниловых пластинок</p>
     <nav aria-label="Разделы магазина">
       <a href="#records">Релизы</a>
       <a href="#basket">Мой заказ: <span id="basket-quantity">0</span></a>
@@ -118,10 +118,11 @@
       </table>
       </div>
       <p>Общая стоимость: <output id="basket-amount" aria-live="polite">0 ₽</output></p>
+      <p id="storage-notice" role="status"></p>
       <button id="open-order" type="button" disabled>Оформить заказ</button>
     </section>
 
-    <section id="order" class="order" aria-labelledby="order-title">
+    <section hidden id="order" class="order" aria-labelledby="order-title">
       <h2 id="order-title">Данные для доставки</h2>
       <p>Заполните все четыре поля.</p>
       <form id="delivery-form">
@@ -145,13 +146,13 @@
           <label for="contact-number">Контактный номер телефона</label>
           <input id="contact-number" name="contactNumber" autocomplete="tel" type="tel" maxlength="30" required>
         </div>
-        <button type="submit" disabled>Создать заказ</button>
+        <button type="submit">Создать заказ</button>
       </form>
-      <p id="confirmation" role="status"></p>
     </section>
+    <p id="confirmation" role="status" tabindex="-1"></p>
 
     <section id="about" aria-labelledby="about-title">
-      <h2 id="about-title">Магазин винила</h2>
+      
       
     </section>
   </main>
