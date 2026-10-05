@@ -1,4 +1,4 @@
-/* Общие настройки */
+
 * { box-sizing: border-box; }
 body {
   margin: 0;
@@ -40,7 +40,7 @@ input, textarea {
 textarea { resize: vertical; }
 form { max-width: 550px; }
 footer { border-top: 1px solid #ccc; }
-/* Ссылка для перехода к содержимому с клавиатуры */
+
 .skip-link { position: absolute; left: -10000px; }
 .skip-link:focus {
   left: 10px;
@@ -51,12 +51,12 @@ footer { border-top: 1px solid #ccc; }
 :focus-visible { outline: 2px solid #354f80; outline-offset: 3px; }
 [hidden] { display: none !important; }
 
-/* Шапка и описание магазина */
+
 .masthead { background: #e2e7ef; }
 .logo { font-size: 24px; font-weight: bold; text-decoration: none; }
 nav { display: flex; flex-wrap: wrap; gap: 20px; }
 .cover-story { padding-bottom: 15px; border-bottom: 1px solid #ccc; }
-/* Каталог из двух колонок */
+
 .record-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -74,7 +74,7 @@ nav { display: flex; flex-wrap: wrap; gap: 20px; }
 dl { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 dd { margin: 0; }
 .release button { margin-top: auto; }
-/* На телефоне таблица прокручивается внутри блока */
+
 .basket-scroll { overflow-x: auto; }
 .basket-table { width: 100%; border-collapse: collapse; background: white; }
 th, td { padding: 10px; border: 1px solid #bbb; text-align: left; }
@@ -87,5 +87,5 @@ caption { margin-bottom: 10px; text-align: left; }
   main, body > header, footer { padding: 12px; }
 }
 
-/* Поле количества в таблице корзины */
+
 .basket-table input { width: 90px; }

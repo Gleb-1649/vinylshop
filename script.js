@@ -43,6 +43,7 @@ function addCell(row, text) {
 }
 
 function drawBasket() {
+  const focusedId = document.activeElement.id;
   rows.replaceChildren(emptyRow);
   const codes = Object.keys(basket);
   emptyRow.hidden = codes.length > 0;
@@ -60,6 +61,7 @@ function drawBasket() {
     const quantityCell = addCell(row, '');
     const input = document.createElement('input');
     input.type = 'number';
+    input.id = 'quantity-' + code;
     input.min = '1';
     input.step = '1';
     input.value = basket[code];
@@ -72,6 +74,7 @@ function drawBasket() {
     button.type = 'button';
     button.textContent = 'Удалить';
     button.dataset.remove = code;
+    button.id = 'remove-' + code;
     button.setAttribute('aria-label', 'Удалить: ' + record.title);
     actions.append(button);
     rows.append(row);
@@ -82,15 +85,28 @@ function drawBasket() {
   if (codes.length === 0) orderSection.hidden = true;
   confirmation.textContent = '';
   storeBasket();
+  const focusedControl = document.getElementById(focusedId);
+  if (focusedControl) {
+    focusedControl.focus();
+  } else if (focusedId.startsWith('remove-')) {
+    document.querySelector('[data-add-record]').focus();
+  }
 }
 
+
+rows.addEventListener('keydown', function (event) {
+  if (event.key === 'Enter' && event.target.matches('[data-quantity]')) {
+    event.preventDefault();
+    event.target.blur();
+  }
+});
 
 rows.addEventListener('change', function (event) {
   const input = event.target.closest('[data-quantity]');
   if (!input) return;
   const code = input.dataset.quantity;
   const value = Number(input.value);
-  // Пустое поле, ноль, отрицательное и дробное число не принимаются.
+  
   if (!Number.isSafeInteger(value) || value < 1 ||
       !Number.isSafeInteger(value * records[code].price)) {
     input.value = basket[code];
