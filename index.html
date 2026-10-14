@@ -6,6 +6,7 @@
   <meta name="description" content="Магазин винила">
   <title>музыка на виниле</title>
   <link rel="stylesheet" href="styles.css">
+  <script src="catalog.js" defer></script>
   <script src="script.js" defer></script>
 </head>
 <body>
@@ -35,68 +36,20 @@
         <h2 id="records-title">На полке</h2>
         <p>Электроника, джаз, инди и эмбиент</p>
       </header>
-      <div class="record-grid">
-        <article class="release" aria-labelledby="release-night-lines"
-                 data-record="night-lines" data-title="Mira Lane — Night Lines" data-cost="2490">
+      <div class="record-grid"></div>
+      <template id="release-template">
+        <article class="release">
+          <div class="sleeve" hidden aria-hidden="true"><span>LP</span></div>
           <header class="release-heading">
-            <p>Электроника / 2024</p>
-            <h3 id="release-night-lines">Night Lines</h3>
-            <p class="artist">Mira Lane</p>
+            <p class="release-info"></p>
+            <h3></h3>
+            <p class="artist"></p>
           </header>
-          <p>Синтезаторные мелодии и размеренный городской ритм.</p>
-          <dl>
-            <dt>Формат</dt><dd>LP, 12 дюймов</dd>
-            <dt>Цена</dt><dd><data value="2490">2 490 ₽</data></dd>
-          </dl>
-          <button type="button" data-add-record="night-lines"
-                  aria-label="Добавить в корзину: Mira Lane — Night Lines" disabled>Добавить в корзину</button>
+          <p class="description"></p>
+          <dl><dt>Формат</dt><dd>LP, 12 дюймов</dd><dt>Цена</dt><dd class="release-price"></dd></dl>
+          <button type="button">Добавить в корзину</button>
         </article>
-        <article class="release" aria-labelledby="release-soft-focus"
-                 data-record="soft-focus" data-title="The Sunday Trio — Soft Focus" data-cost="3190">
-          <header class="release-heading">
-            <p>Джаз / 2023</p>
-            <h3 id="release-soft-focus">Soft Focus</h3>
-            <p class="artist">The Sunday Trio</p>
-          </header>
-          <p>Камерная запись фортепианного трио.</p>
-          <dl>
-            <dt>Формат</dt><dd>LP, 12 дюймов</dd>
-            <dt>Цена</dt><dd><data value="3190">3 190 ₽</data></dd>
-          </dl>
-          <button type="button" data-add-record="soft-focus"
-                  aria-label="Добавить в корзину: The Sunday Trio — Soft Focus" disabled>Добавить в корзину</button>
-        </article>
-        <article class="release" aria-labelledby="release-northern-air"
-                 data-record="northern-air" data-title="Polar Echo — Northern Air" data-cost="2790">
-          <header class="release-heading">
-            <p>Инди / 2025</p>
-            <h3 id="release-northern-air">Northern Air</h3>
-            <p class="artist">Polar Echo</p>
-          </header>
-          <p>Гитарный альбом о дороге и северных городах.</p>
-          <dl>
-            <dt>Формат</dt><dd>LP, 12 дюймов</dd>
-            <dt>Цена</dt><dd><data value="2790">2 790 ₽</data></dd>
-          </dl>
-          <button type="button" data-add-record="northern-air"
-                  aria-label="Добавить в корзину: Polar Echo — Northern Air" disabled>Добавить в корзину</button>
-        </article>
-        <article class="release" aria-labelledby="release-slow-orbit"
-                 data-record="slow-orbit" data-title="Noma — Slow Orbit" data-cost="2290">
-          <header class="release-heading">
-            <p>Эмбиент / 2026</p>
-            <h3 id="release-slow-orbit">Slow Orbit</h3>
-            <p class="artist">Noma</p>
-          </header>
-          <p>Просторные звуковые пейзажи для внимательного слушания.</p>
-          <dl>
-            <dt>Формат</dt><dd>LP, 12 дюймов</dd>
-            <dt>Цена</dt><dd><data value="2290">2 290 ₽</data></dd>
-          </dl>
-          <button type="button" data-add-record="slow-orbit"
-                  aria-label="Добавить в корзину: Noma — Slow Orbit" disabled>Добавить в корзину</button>
-        </article>
-      </div>
+      </template>
     </section>
 
     <section id="basket" class="basket" aria-labelledby="basket-title">

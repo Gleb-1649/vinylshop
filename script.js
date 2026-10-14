@@ -1,5 +1,4 @@
 
-const records = {};
 const basket = {};
 const rows = document.querySelector('#basket-lines');
 const emptyRow = document.querySelector('#empty-basket');
@@ -17,15 +16,26 @@ function money(value) {
   return value.toLocaleString('ru-RU') + ' ₽';
 }
 
-document.querySelectorAll('.release').forEach(function (card) {
-  const code = card.dataset.record;
-  records[code] = {
-    title: card.dataset.title,
-    price: Number(card.dataset.cost)
-  };
-  card.querySelector('button').disabled = false;
-});
+function showRecords(codes) {
+  const shelf = document.querySelector('.record-grid');
+  const template = document.querySelector('#release-template');
+  shelf.replaceChildren();
+  codes.forEach(function (code) {
+    const record = records[code];
+    const card = template.content.firstElementChild.cloneNode(true);
+    card.querySelector('h3').textContent = record.album;
+    card.querySelector('.artist').textContent = record.artist;
+    card.querySelector('.release-info').textContent = record.genre + ' / ' + record.year;
+    card.querySelector('.description').textContent = record.description;
+    card.querySelector('.release-price').textContent = money(record.price);
+    const button = card.querySelector('button');
+    button.dataset.addRecord = code;
+    button.setAttribute('aria-label', 'Добавить в корзину: ' + record.title);
+    shelf.append(card);
+  });
+}
 
+showRecords(Object.keys(records));
 
 document.querySelector('.record-grid').addEventListener('click', function (event) {
   const button = event.target.closest('[data-add-record]');
@@ -42,7 +52,7 @@ function addCell(row, text) {
   return cell;
 }
 
-function drawBasket() {
+function drawBasket(persist = true) {
   const focusedId = document.activeElement.id;
   rows.replaceChildren(emptyRow);
   const codes = Object.keys(basket);
@@ -84,7 +94,7 @@ function drawBasket() {
   openOrder.disabled = codes.length === 0;
   if (codes.length === 0) orderSection.hidden = true;
   confirmation.textContent = '';
-  storeBasket();
+  if (persist) storeBasket();
   const focusedControl = document.getElementById(focusedId);
   if (focusedControl) {
     focusedControl.focus();
@@ -128,14 +138,18 @@ function storeBasket() {
     localStorage.setItem(basketKey, JSON.stringify(basket));
     storageNotice.textContent = '';
   } catch (error) {
-    storageNotice.textContent = 'Не удалось сохранить корзину в этом браузере.';
+    console.warn('Не удалось сохранить заказ пластинок:', error);
+    storageNotice.textContent = 'Сохранение недоступно: изменения заказа могут потеряться после обновления.';
   }
 }
 
 function restoreBasket() {
   try {
     const saved = JSON.parse(localStorage.getItem(basketKey) || '{}');
-    if (!saved || typeof saved !== 'object' || Array.isArray(saved)) return;
+    if (!saved || typeof saved !== 'object' || Array.isArray(saved)) {
+      storageNotice.textContent = 'Сохранённый заказ имеет неверный формат.';
+      return;
+    }
     
     Object.keys(records).forEach(function (code) {
       const quantity = saved[code];
@@ -145,7 +159,8 @@ function restoreBasket() {
       }
     });
   } catch (error) {
-    
+    console.warn('Не удалось загрузить заказ пластинок:', error);
+    storageNotice.textContent = 'Не удалось загрузить сохранённый заказ. Добавьте пластинки заново.';
   }
 }
 
@@ -178,4 +193,4 @@ deliveryForm.addEventListener('submit', function (event) {
 });
 
 restoreBasket();
-drawBasket();
+drawBasket(false);
