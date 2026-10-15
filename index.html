@@ -19,16 +19,14 @@
     <nav aria-label="Разделы магазина">
       <a href="#records">Релизы</a>
       <a href="#basket">Мой заказ: <span id="basket-quantity">0</span></a>
-      <a href="#about">О магазине</a>
+      
     </nav>
   </header>
 
   <main id="content">
     <section class="cover-story" aria-labelledby="cover-title">
-      <p>Коллекция / 2026</p>
-      <h1 id="cover-title">Музыка, которую можно держать в руках</h1>
-      <p>Четыре настроения. Четыре пластинки. Найдите свою сторону.</p>
-      <a href="#records">Смотреть релизы</a>
+      <h1 id="cover-title">Каталог винила</h1>
+      <p>LP / Электроника / Джаз / Инди / Эмбиент</p>
     </section>
 
     <section id="records" aria-labelledby="records-title">
@@ -36,10 +34,20 @@
         <h2 id="records-title">На полке</h2>
         <p>Электроника, джаз, инди и эмбиент</p>
       </header>
+      <div class="record-tools">
+        <label for="record-sort">Порядок релизов</label>
+        <select id="record-sort">
+          <option value="original">Как на полке</option>
+          <option value="cheaper">Сначала дешевле</option>
+          <option value="newer">Сначала новые</option>
+          <option value="artist">По исполнителю</option>
+        </select>
+      </div>
+      <p id="sort-status" role="status"></p>
       <div class="record-grid"></div>
       <template id="release-template">
         <article class="release">
-          <div class="sleeve" hidden aria-hidden="true"><span>LP</span></div>
+          <img class="record-cover" width="512" height="512" alt="">
           <header class="release-heading">
             <p class="release-info"></p>
             <h3></h3>

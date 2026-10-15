@@ -23,6 +23,9 @@ function showRecords(codes) {
   codes.forEach(function (code) {
     const record = records[code];
     const card = template.content.firstElementChild.cloneNode(true);
+    const image = card.querySelector('.record-cover');
+    image.src = record.image;
+    image.alt = 'Обложка альбома ' + record.album;
     card.querySelector('h3').textContent = record.album;
     card.querySelector('.artist').textContent = record.artist;
     card.querySelector('.release-info').textContent = record.genre + ' / ' + record.year;
@@ -194,3 +197,13 @@ deliveryForm.addEventListener('submit', function (event) {
 
 restoreBasket();
 drawBasket(false);
+
+document.querySelector('#record-sort').addEventListener('change', function (event) {
+  const order = event.target.value;
+  const codes = Object.keys(records);
+  if (order === 'cheaper') codes.sort(function (a, b) { return records[a].price - records[b].price; });
+  if (order === 'newer') codes.sort(function (a, b) { return records[b].year - records[a].year; });
+  if (order === 'artist') codes.sort(function (a, b) { return records[a].artist.localeCompare(records[b].artist); });
+  showRecords(codes);
+  document.querySelector('#sort-status').textContent = 'Порядок: ' + event.target.selectedOptions[0].textContent;
+});
