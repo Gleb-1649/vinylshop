@@ -10,6 +10,9 @@ const deliveryForm = document.querySelector('#delivery-form');
 const confirmation = document.querySelector('#confirmation');
 const storageNotice = document.querySelector('#storage-notice');
 const basketKey = 'vinyl-shop-basket';
+const maxCopies = 20;
+const basketWarning = document.querySelector('#basket-warning');
+let readWarning = '';
 
 
 function money(value) {
@@ -44,6 +47,11 @@ document.querySelector('.record-grid').addEventListener('click', function (event
   const button = event.target.closest('[data-add-record]');
   if (!button) return;
   const code = button.dataset.addRecord;
+  if ((basket[code] || 0) >= maxCopies) {
+    basketWarning.textContent = 'В одном заказе может быть до 20 копий релиза.';
+    return;
+  }
+  basketWarning.textContent = '';
   basket[code] = (basket[code] || 0) + 1;
   drawBasket();
 });
@@ -60,14 +68,10 @@ function drawBasket(persist = true) {
   rows.replaceChildren(emptyRow);
   const codes = Object.keys(basket);
   emptyRow.hidden = codes.length > 0;
-  let sum = 0;
-  let quantity = 0;
 
   codes.forEach(function (code) {
     const record = records[code];
     const subtotal = record.price * basket[code];
-    sum += subtotal;
-    quantity += basket[code];
     const row = document.createElement('tr');
     addCell(row, record.title);
     addCell(row, money(record.price));
@@ -76,12 +80,13 @@ function drawBasket(persist = true) {
     input.type = 'number';
     input.id = 'quantity-' + code;
     input.min = '1';
+    input.max = String(maxCopies);
     input.step = '1';
     input.value = basket[code];
     input.dataset.quantity = code;
     input.setAttribute('aria-label', 'Количество: ' + record.title);
     quantityCell.append(input);
-    addCell(row, money(subtotal));
+    addCell(row, money(subtotal)).dataset.subtotal = code;
     const actions = addCell(row, '');
     const button = document.createElement('button');
     button.type = 'button';
@@ -92,8 +97,7 @@ function drawBasket(persist = true) {
     actions.append(button);
     rows.append(row);
   });
-  amount.textContent = money(sum);
-  counter.textContent = quantity;
+  updateAmount();
   openOrder.disabled = codes.length === 0;
   if (codes.length === 0) orderSection.hidden = true;
   confirmation.textContent = '';
@@ -102,7 +106,8 @@ function drawBasket(persist = true) {
   if (focusedControl) {
     focusedControl.focus();
   } else if (focusedId.startsWith('remove-')) {
-    document.querySelector('[data-add-record]').focus();
+    const nextInput = rows.querySelector('[data-quantity]');
+    (nextInput || document.querySelector('[data-add-record]')).focus();
   }
 }
 
@@ -119,19 +124,35 @@ rows.addEventListener('change', function (event) {
   if (!input) return;
   const code = input.dataset.quantity;
   const value = Number(input.value);
-  
-  if (!Number.isSafeInteger(value) || value < 1 ||
-      !Number.isSafeInteger(value * records[code].price)) {
+  if (!Number.isInteger(value) || value < 1 || value > maxCopies) {
     input.value = basket[code];
+    basketWarning.textContent = 'Введите целое количество от 1 до 20. Сохранено прежнее значение.';
     return;
   }
+  basketWarning.textContent = '';
   basket[code] = value;
-  drawBasket();
+  // Меняем только сумму: кнопка удаления должна пережить событие change.
+  input.closest('tr').querySelector('[data-subtotal]').textContent = money(value * records[code].price);
+  updateAmount();
+  confirmation.textContent = '';
+  storeBasket();
 });
+
+function updateAmount() {
+  let total = 0;
+  let copies = 0;
+  for (const code of Object.keys(basket)) {
+    total += basket[code] * records[code].price;
+    copies += basket[code];
+  }
+  amount.textContent = money(total);
+  counter.textContent = copies;
+}
 
 rows.addEventListener('click', function (event) {
   const button = event.target.closest('[data-remove]');
   if (!button) return;
+  basketWarning.textContent = '';
   delete basket[button.dataset.remove];
   drawBasket();
 });
@@ -139,32 +160,36 @@ rows.addEventListener('click', function (event) {
 function storeBasket() {
   try {
     localStorage.setItem(basketKey, JSON.stringify(basket));
-    storageNotice.textContent = '';
+    storageNotice.textContent = readWarning;
   } catch (error) {
     console.warn('Не удалось сохранить заказ пластинок:', error);
-    storageNotice.textContent = 'Сохранение недоступно: изменения заказа могут потеряться после обновления.';
+    storageNotice.textContent = readWarning + ' Сохранение недоступно: изменения заказа могут потеряться после обновления.';
   }
 }
 
 function restoreBasket() {
   try {
-    const saved = JSON.parse(localStorage.getItem(basketKey) || '{}');
+    const raw = localStorage.getItem(basketKey);
+    if (raw === null) return;
+    const saved = JSON.parse(raw);
     if (!saved || typeof saved !== 'object' || Array.isArray(saved)) {
-      storageNotice.textContent = 'Сохранённый заказ имеет неверный формат.';
-      return;
+      throw new Error('Ожидался объект с количеством пластинок');
     }
-    
-    Object.keys(records).forEach(function (code) {
-      const quantity = saved[code];
-      if (Number.isSafeInteger(quantity) && quantity > 0 &&
-          Number.isSafeInteger(quantity * records[code].price)) {
-        basket[code] = quantity;
+    let rejected = 0;
+    Object.keys(saved).forEach(function (code) {
+      const copies = saved[code];
+      if (!Object.hasOwn(records, code) || !Number.isInteger(copies) || copies < 1 || copies > maxCopies) {
+        rejected += 1;
+      } else {
+        basket[code] = copies;
       }
     });
+    if (rejected > 0) readWarning = 'Пропущены некорректные позиции: ' + rejected + '.';
   } catch (error) {
-    console.warn('Не удалось загрузить заказ пластинок:', error);
-    storageNotice.textContent = 'Не удалось загрузить сохранённый заказ. Добавьте пластинки заново.';
+    console.warn('Загрузка заказа пластинок прервана:', error);
+    readWarning = 'Сохранённый заказ недоступен или повреждён. Можно собрать новый.';
   }
+  storageNotice.textContent = readWarning;
 }
 
 openOrder.addEventListener('click', function () {
